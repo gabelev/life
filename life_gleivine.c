@@ -16,9 +16,10 @@ void print_world(int world[ROW][COL]);
 // int is_empty << do we need these?
 void generate_next_iteration(int world[ROW][COL]);
 int find_num_neighbors(int world[ROW][COL], int x_coordinate, int y_coordinate);
+void write_output(int world[ROW][COL], FILE *output_file);
 
 int main(int argc, char* argv[]) {
-    FILE *output_file = fopen("output.out", "w");
+    FILE *output_file = fopen("output_gabe.out", "w");
     FILE *inputfile = fopen(argv[2], "r");
     
     
@@ -41,9 +42,9 @@ int main(int argc, char* argv[]) {
         }
     } 
 
+    /*
     printf("start\n");
     print_world(world);
-    /*
     printf("neighbors\n");
     for (i = 0; i < ROW; i++) {
         for (j = 0; j < COL; j++) {
@@ -51,18 +52,22 @@ int main(int argc, char* argv[]) {
         }
     }
     */
+
+    // create the generations
     for (i = 0; i <= generation; i++) {
         generate_next_iteration(world);
     }
-    printf("end\n");
-    print_world(world);
-
     
+    // printf("end\n");
+    // print_world(world);
+    
+    write_output(world, output_file);
     fclose(inputfile);
+    fclose(output_file);
     return 0;
 }
 
-/* print for debugging*/
+/* print for debugging */
 void print_world(int world[ROW][COL]) {
     int i, j;
     for (i = 0; i < ROW; i++) {
@@ -72,6 +77,21 @@ void print_world(int world[ROW][COL]) {
                 
             } else {
                 printf("%d ", world[i][j]);
+            }
+        }
+    }
+}
+
+// output our file
+void write_output(int world[ROW][COL], FILE *output_file) {
+    int i, j;
+    for (i = 0; i < ROW; i++) {
+        for (j = 0; j < COL; j++) {
+            if (j == COL - 1) {
+                fprintf(output_file, "%d\n", world[i][j]);
+                
+            } else {
+                fprintf(output_file, "%d ", world[i][j]);
             }
         }
     }

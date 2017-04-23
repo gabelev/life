@@ -39,12 +39,15 @@ int main(int argc, char* argv[]) {
     } 
 
     print_world(world);
+    /*
     printf("neighbors\n");
     for (i = 0; i < ROW; i++) {
         for (j = 0; j < COL; j++) {
             printf("(%d %d) %d, ", i, j, find_num_neighbors(world, i, j));
         }
     }
+    */
+    
     fclose(inputfile);
     return 0;
 }
@@ -89,4 +92,33 @@ int find_num_neighbors(int world[ROW][COL], int y_coordinate, int x_coordinate) 
     }
     // printf("(%d, %d: %d)", )
     return num_neighbors;
+}
+
+void generate_next_iteration(int world[ROW][COL]) {
+    int new_world[ROW][COL];
+    int i, k, num_neighbors;
+    for (i = 0; i < ROW; i++) {
+        for (k = 0; k < COL; k++) {
+            num_neighbors = find_num_neighbors(world, i, k); // TODO check order of i,k
+            if ((num_neighbors == 2) || (num_neighbors == 3)) {
+                if (world[i][k] == 1) {
+                    new_world[i][k] = 1;
+                    continue;
+                }
+                if ((world[i][k]) && (num_neighbors == 3)) {
+                    new_world[i][k] = 1;
+                    continue;
+                } else {
+                    new_world[i][k] = 0;
+                }
+            } else {
+                new_world[i][k] = 0;
+            }
+        }
+    }
+    for (i = 0; i < ROW; i++) {
+        for (k = 0; k < COL; k++) {
+            world[i][k] = new_world[i][k];
+        }
+    }
 }

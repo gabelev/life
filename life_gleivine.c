@@ -7,6 +7,7 @@ Description: The Game of life.
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #define ROW 10
 #define COL 10
 
@@ -25,6 +26,8 @@ int main(int argc, char* argv[]) {
     char buffer[60];
     int world[ROW][COL];
     int i, j;
+    
+    generation = atoi(argv[1]);
 
     if (inputfile == NULL) {
         printf("No file to read");
@@ -38,6 +41,7 @@ int main(int argc, char* argv[]) {
         }
     } 
 
+    printf("start\n");
     print_world(world);
     /*
     printf("neighbors\n");
@@ -47,6 +51,12 @@ int main(int argc, char* argv[]) {
         }
     }
     */
+    for (i = 0; i <= generation; i++) {
+        generate_next_iteration(world);
+    }
+    printf("end\n");
+    print_world(world);
+
     
     fclose(inputfile);
     return 0;

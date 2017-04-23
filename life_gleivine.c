@@ -42,9 +42,9 @@ int main(int argc, char* argv[]) {
         }
     } 
 
-    /*
     printf("start\n");
     print_world(world);
+    /*
     printf("neighbors\n");
     for (i = 0; i < ROW; i++) {
         for (j = 0; j < COL; j++) {
@@ -58,10 +58,10 @@ int main(int argc, char* argv[]) {
         generate_next_iteration(world);
     }
     
-    // printf("end\n");
-    // print_world(world);
+    printf("end\n");
+    print_world(world);
     
-    write_output(world, output_file);
+    // write_output(world, output_file);
     fclose(inputfile);
     fclose(output_file);
     return 0;
@@ -146,9 +146,13 @@ void generate_next_iteration(int world[ROW][COL]) {
             }
         }
     }
+    /*
     for (i = 0; i < ROW; i++) {
         for (k = 0; k < COL; k++) {
             world[i][k] = new_world[i][k];
         }
     }
+    */
+    // printf("DEBUG\n");
+    // print_world(new_world);
 }

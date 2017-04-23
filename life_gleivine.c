@@ -11,6 +11,10 @@ Description: The Game of life.
 #define COL 10
 
 void print_world(int world[ROW][COL]);
+// int check_worlds_are_same(int old_world[ROW][COL], int new_world[ROW][COL]);
+// int is_empty << do we need these?
+void generate_next_iteration(int world[ROW][COL]);
+int find_num_neighbors(int world[ROW][COL], int x_coordinate, int y_coordinate);
 
 int main(int argc, char* argv[]) {
     FILE *output_file = fopen("output.out", "w");
@@ -35,17 +39,22 @@ int main(int argc, char* argv[]) {
     } 
 
     print_world(world);
+    printf("neighbors\n");
+    for (i = 0; i < ROW; i++) {
+        for (j = 0; j < COL; j++) {
+            printf("(%d %d) %d, ", i, j, find_num_neighbors(world, i, j));
+        }
+    }
     fclose(inputfile);
     return 0;
 }
-
 
 /* print for debugging*/
 void print_world(int world[ROW][COL]) {
     int i, j;
     for (i = 0; i < ROW; i++) {
         for (j = 0; j < COL; j++) {
-            if (j == 9) {
+            if (j == COL - 1) {
                 printf("%d\n", world[i][j]);
                 
             } else {
@@ -53,4 +62,31 @@ void print_world(int world[ROW][COL]) {
             }
         }
     }
+}
+
+/* iterates through all the array locations around a given
+ * point incrementing the num_neighbors if there is a 1, ignoring
+ * coordinares that are out of bounds and the initial point itself.
+ */
+int find_num_neighbors(int world[ROW][COL], int y_coordinate, int x_coordinate) {
+    int i, j;
+    int num_neighbors = 0;
+    for (i = -1; i <= 1; i++) {
+        for (j = -1; j <= 1; j++) {
+            if((y_coordinate + i >=0) &&
+               (x_coordinate + j >= 0) &&
+               (y_coordinate + i < COL) &&
+               (x_coordinate + j < ROW)) {
+                    if (world[y_coordinate + i][x_coordinate + j] == 1) {
+                        if (i == 0 && j == 0) {
+                            continue;
+                        } else {
+                            num_neighbors++;
+                        }
+                    }
+            }
+        }
+    }
+    // printf("(%d, %d: %d)", )
+    return num_neighbors;
 }

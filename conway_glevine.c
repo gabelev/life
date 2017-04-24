@@ -23,7 +23,6 @@ int main(int argc, char* argv[]) {
     FILE *output_file = fopen("output.out", "w");
     FILE *inputfile = fopen(argv[2], "r"); 
     int generation;
-    char buffer[60];
     int i, j;
     int **new;
     int generation_counter;

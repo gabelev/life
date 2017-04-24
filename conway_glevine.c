@@ -20,7 +20,7 @@ int find_num_neighbors_p(int **world, int x_coordinate, int y_coordinate);
 void write_output(int **world, FILE *output_file);
 
 int main(int argc, char* argv[]) {
-    FILE *output_file = fopen("output_gabe.out", "w");
+    FILE *output_file = fopen("output.out", "w");
     FILE *inputfile = fopen(argv[2], "r");
     
     

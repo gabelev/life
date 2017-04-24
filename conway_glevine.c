@@ -126,10 +126,9 @@ void write_output(int **world, FILE *output_file) {
     for (i = 0; i < ROW; i++) {
         for (j = 0; j < COL; j++) {
             if (j == COL - 1) {
-                fprintf(output_file, "%d\n", world[i][j]);
-                
+                fprintf(output_file, "%d\n", world[i][j]);   
             } else {
-                fprintf(output_file, "%d ", world[i][j]);
+                fprintf(output_file, "%d", world[i][j]);
             }
         }
     }

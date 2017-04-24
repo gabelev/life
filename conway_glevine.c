@@ -12,13 +12,11 @@ Description: The Game of life, now in C.
 #define COL 10
 
 int** create_array();
-int** swap_arrays(int **temp, int **original);
+int find_num_neighbors(int **world, int x_coordinate, int y_coordinate);
+int** generate_next_iteration(int **world);
 void print_world(int world[ROW][COL]);
 void print_pointer(int **world);
-int** generate_next_iteration(int world[ROW][COL]);
-int** generate_next_iteration_p(int **world);
-int find_num_neighbors(int world[ROW][COL], int x_coordinate, int y_coordinate);
-int find_num_neighbors_p(int **world, int x_coordinate, int y_coordinate);
+int** swap_arrays(int **temp, int **original);
 void write_output(int **world, FILE *output_file);
 
 int main(int argc, char* argv[]) {
@@ -26,7 +24,6 @@ int main(int argc, char* argv[]) {
     FILE *inputfile = fopen(argv[2], "r"); 
     int generation;
     char buffer[60];
-    // int world[ROW][COL];
     int i, j;
     int **new;
     int generation_counter;
@@ -49,16 +46,15 @@ int main(int argc, char* argv[]) {
     generation_counter = 0;
     
     // create the generations
-    new = generate_next_iteration_p(world);
+    new = generate_next_iteration(world);
     while (generation_counter < generation - 1) {
-        new = generate_next_iteration_p(new);
+        new = generate_next_iteration(new);
         generation_counter++;
     }
 
     write_output(new, output_file);
     fclose(inputfile);
     fclose(output_file);
-    // free(world);
     free(new);
     return 0;
 }
@@ -92,8 +88,6 @@ void print_pointer(int **world) {
     }
 }
 
-
-
 /* output our file */
 void write_output(int **world, FILE *output_file) {
     int i, j;
@@ -110,31 +104,8 @@ void write_output(int **world, FILE *output_file) {
 
 /* iterates through all the array locations around a given
  * point incrementing the num_neighbors if there is a 1, ignoring
- * coordinares that are out of bounds and the initial point itself.
+ * coordinates that are out of bounds and the initial point itself.
  */
-int find_num_neighbors(int world[ROW][COL], int y_coordinate, int x_coordinate) {
-    int i, j;
-    int num_neighbors = 0;
-    for (i = -1; i <= 1; i++) {
-        for (j = -1; j <= 1; j++) {
-            if((y_coordinate + i >=0) &&
-               (x_coordinate + j >= 0) &&
-               (y_coordinate + i < COL) &&
-               (x_coordinate + j < ROW)) {
-                    if (world[y_coordinate + i][x_coordinate + j] == 1) {
-                        if (i == 0 && j == 0) {
-                            continue;
-                        } else {
-                            num_neighbors++;
-                        }
-                    }
-            }
-        }
-    }
-    return num_neighbors;
-}
-
-/* Same as above, but takes a pointer world as input*/
 int find_num_neighbors_p(int **world, int y_coordinate, int x_coordinate) {
     int i, j;
     int num_neighbors = 0;
@@ -168,7 +139,7 @@ int** create_array(){
     return multi_array;
 }
 
-/**/
+/* let's swap arrays. */
 int** swap_arrays(int **temp, int **original) {
     int i, j;
     for (i = 0; i < ROW; i++) {
@@ -180,36 +151,9 @@ int** swap_arrays(int **temp, int **original) {
 }
 
 /* Generates the next world based on conway rules.
- * param: mutli-dimensional array.
- * return: pointer to an array.
- * */
-int** generate_next_iteration(int world[ROW][COL]) {
-    int** new_world;
-    int i, k, num_neighbors;
-    new_world = create_array();
-    for (i = 0; i < ROW; i++) {
-        for (k = 0; k < COL; k++) {
-            num_neighbors = find_num_neighbors(world, i, k); 
-            if ((num_neighbors == 2) || (num_neighbors == 3)) {
-                if (world[i][k] == 1) {
-                    new_world[i][k] = 1;
-                    continue;
-                }
-                if ((world[i][k] == 0) && (num_neighbors == 3)) {
-                    new_world[i][k] = 1;
-                    continue;
-                } else {
-                    new_world[i][k] = 0;
-                }
-            } else {
-                new_world[i][k] = 0;
-            }
-        }
-    }
-    return new_world;
-}
-
-/* Same as above but takes a pointer as input. */
+ * param: pointer to a 2D array.
+ * return: pointer to a 2D array solution.
+ */
 int** generate_next_iteration_p(int **world) {
     int** temp_world;
     int i, k, num_neighbors;

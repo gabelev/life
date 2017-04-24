@@ -20,7 +20,10 @@ int** swap_arrays(int **temp, int **original);
 void write_output(int **world, FILE *output_file);
 
 int main(int argc, char* argv[]) {
-    FILE *output_file = fopen("output.out", "w");
+    char *input_file_name = argv[2];
+    char *output_file_name;
+    asprintf(&output_file_name,"%s%s", input_file_name, ".out");
+    FILE *output_file = fopen(output_file_name, "w");
     FILE *inputfile = fopen(argv[2], "r"); 
     int generation, i, j;
     int **new, **world;

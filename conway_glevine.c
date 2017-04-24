@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
     generation_counter = 0;
     int* values = calloc(ROW * COL, sizeof(int));
     int** pt_world = malloc(ROW * sizeof(int*));
-    for (int i=0; i < ROW; ++i) {
+    for (i=0; i < ROW; ++i) {
         pt_world[i] = values + i * COL;
     }
 
@@ -188,7 +188,7 @@ int** generate_next_iteration_p(int **world) {
     int* values = calloc(ROW * COL, sizeof(int));
     int** new_world = malloc(ROW * sizeof(int*));
     int i, k, num_neighbors;
-    for (int i=0; i < ROW; ++i) {
+    for (i=0; i < ROW; ++i) {
         new_world[i] = values + i * COL;
     }
     for (i = 0; i < ROW; i++) {
@@ -225,7 +225,7 @@ int** generate_next_iteration(int world[ROW][COL]) {
     int* values = calloc(ROW * COL, sizeof(int));
     int** new_world = malloc(ROW * sizeof(int*));
     int i, k, num_neighbors;
-    for (int i=0; i < ROW; ++i) {
+    for (i=0; i < ROW; ++i) {
         new_world[i] = values + i * COL;
     }
     for (i = 0; i < ROW; i++) {

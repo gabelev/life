@@ -22,11 +22,8 @@ void write_output(int **world, FILE *output_file);
 int main(int argc, char* argv[]) {
     FILE *output_file = fopen("output.out", "w");
     FILE *inputfile = fopen(argv[2], "r"); 
-    int generation;
-    int i, j;
-    int **new;
-    int generation_counter;
-    int **world;
+    int generation, i, j;
+    int **new, **world;
 
     generation = atoi(argv[1]);
 
@@ -43,10 +40,9 @@ int main(int argc, char* argv[]) {
     } 
  
     // create the generations
-    new = generate_next_iteration(world);
     while (generation > 0) {
         new = generate_next_iteration(new);
-        generation--;
+        --generation;
     }
 
     write_output(new, output_file);

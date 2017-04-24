@@ -3,7 +3,7 @@ Author: Gabe Levine
 NYUID: gl396
 Date: April 23, 2017
 
-Description: The Game of life.
+Description: The Game of life, now in C.
 */
 
 #include <stdio.h>
@@ -21,13 +21,13 @@ void write_output(int **world, FILE *output_file);
 
 int main(int argc, char* argv[]) {
     FILE *output_file = fopen("output.out", "w");
-    FILE *inputfile = fopen(argv[2], "r");
-    
-    
+    FILE *inputfile = fopen(argv[2], "r"); 
     int generation;
     char buffer[60];
     int world[ROW][COL];
     int i, j;
+    int **new;
+    int generation_counter;
     
     generation = atoi(argv[1]);
 
@@ -43,49 +43,19 @@ int main(int argc, char* argv[]) {
         }
     } 
 
-    // printf("start\n");
-    // print_world(world);
-    /*
-    printf("neighbors\n");
-    for (i = 0; i < ROW; i++) {
-        for (j = 0; j < COL; j++) {
-            printf("(%d %d) %d, ", i, j, find_num_neighbors(world, i, j));
-        }
-    }
-    */
-
-    
-    int **new;
-    int generation_counter;
     generation_counter = 0;
-    // makes another array not using.
-    int* values = calloc(ROW * COL, sizeof(int));
-    int** pt_world = malloc(ROW * sizeof(int*));
-    for (i=0; i < ROW; ++i) {
-        pt_world[i] = values + i * COL;
-    }
-
+    
     // create the generations
     new = generate_next_iteration(world);
     while (generation_counter < generation - 1) {
         new = generate_next_iteration_p(new);
         generation_counter++;
     }
-    // new = generate_next_iteration(world);
-    // printf("end 1\n");
-    // print_world(new);
-    // print_pointer(new);
 
-    // new = generate_next_iteration_p(new);
-    // printf("end 2\n");
-    // print_pointer(new);
-
-    
     write_output(new, output_file);
     fclose(inputfile);
     fclose(output_file);
     free(new);
-    free(pt_world);
     return 0;
 }
 
@@ -157,7 +127,6 @@ int find_num_neighbors(int world[ROW][COL], int y_coordinate, int x_coordinate) 
             }
         }
     }
-    // printf("(%d, %d: %d)", )
     return num_neighbors;
 }
 
@@ -180,7 +149,6 @@ int find_num_neighbors_p(int **world, int y_coordinate, int x_coordinate) {
             }
         }
     }
-    // printf("(%d, %d: %d)", )
     return num_neighbors;
 }
 
@@ -193,7 +161,7 @@ int** generate_next_iteration_p(int **world) {
     }
     for (i = 0; i < ROW; i++) {
         for (k = 0; k < COL; k++) {
-            num_neighbors = find_num_neighbors_p(world, i, k); // TODO check order of i,k
+            num_neighbors = find_num_neighbors_p(world, i, k); 
             if ((num_neighbors == 2) || (num_neighbors == 3)) {
                 if (world[i][k] == 1) {
                     new_world[i][k] = 1;
@@ -210,17 +178,9 @@ int** generate_next_iteration_p(int **world) {
             }
         }
     }
-    /*
-    for (i = 0; i < ROW; i++) {
-        for (k = 0; k < COL; k++) {
-            world[i][k] = new_world[i][k];
-        }
-    }
-    */
-    // printf("DEBUG\n");
-    // print_world(new_world);
     return new_world;
 }
+
 int** generate_next_iteration(int world[ROW][COL]) {
     int* values = calloc(ROW * COL, sizeof(int));
     int** new_world = malloc(ROW * sizeof(int*));
@@ -230,7 +190,7 @@ int** generate_next_iteration(int world[ROW][COL]) {
     }
     for (i = 0; i < ROW; i++) {
         for (k = 0; k < COL; k++) {
-            num_neighbors = find_num_neighbors(world, i, k); // TODO check order of i,k
+            num_neighbors = find_num_neighbors(world, i, k); 
             if ((num_neighbors == 2) || (num_neighbors == 3)) {
                 if (world[i][k] == 1) {
                     new_world[i][k] = 1;
@@ -247,14 +207,5 @@ int** generate_next_iteration(int world[ROW][COL]) {
             }
         }
     }
-    /*
-    for (i = 0; i < ROW; i++) {
-        for (k = 0; k < COL; k++) {
-            world[i][k] = new_world[i][k];
-        }
-    }
-    */
-    // printf("DEBUG\n");
-    // print_world(new_world);
     return new_world;
 }

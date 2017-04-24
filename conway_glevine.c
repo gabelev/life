@@ -104,7 +104,7 @@ void write_output(int **world, FILE *output_file) {
  * point incrementing the num_neighbors if there is a 1, ignoring
  * coordinates that are out of bounds and the initial point itself.
  */
-int find_num_neighbors_p(int **world, int y_coordinate, int x_coordinate) {
+int find_num_neighbors(int **world, int y_coordinate, int x_coordinate) {
     int i, j;
     int num_neighbors = 0;
     for (i = -1; i <= 1; i++) {
@@ -158,7 +158,7 @@ int** generate_next_iteration(int **world) {
     temp_world = create_array();
     for (i = 0; i < ROW; i++) {
         for (k = 0; k < COL; k++) {
-            num_neighbors = find_num_neighbors_p(world, i, k); 
+            num_neighbors = find_num_neighbors(world, i, k); 
             if ((num_neighbors == 2) || (num_neighbors == 3)) {
                 if (world[i][k] == 1) {
                     temp_world[i][k] = 1;

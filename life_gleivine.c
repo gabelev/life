@@ -43,8 +43,8 @@ int main(int argc, char* argv[]) {
         }
     } 
 
-    printf("start\n");
-    print_world(world);
+    // printf("start\n");
+    // print_world(world);
     /*
     printf("neighbors\n");
     for (i = 0; i < ROW; i++) {
@@ -54,21 +54,31 @@ int main(int argc, char* argv[]) {
     }
     */
 
-    // create the generations
-    //for (i = 0; i <= generation; i++) {
-        //generate_next_iteration(world);
-    //}
     
     int **new;
+    int generation_counter;
+    generation_counter = 0;
+    int* values = calloc(ROW * COL, sizeof(int));
+    int** pt_world = malloc(ROW * sizeof(int*));
+    for (int i=0; i < ROW; ++i) {
+        pt_world[i] = values + i * COL;
+    }
+    // create the generations
     new = generate_next_iteration(world);
-    printf("end\n");
+    while (generation_counter < generation) {
+        // new = generate_next_iteration(new);
+        generation_counter++;
+    }
+    // new = generate_next_iteration(world);
+    // printf("end\n");
     // print_world(new);
-    print_pointer(new);
+    // print_pointer(new);
     
-    // write_output(new, output_file);
+    write_output(new, output_file);
     fclose(inputfile);
     fclose(output_file);
     free(new);
+    free(pt_world);
     return 0;
 }
 
@@ -100,6 +110,8 @@ void print_pointer(int **world) {
         }
     }
 }
+
+
 
 // output our file
 void write_output(int **world, FILE *output_file) {
@@ -146,7 +158,6 @@ int find_num_neighbors(int world[ROW][COL], int y_coordinate, int x_coordinate) 
 int** generate_next_iteration(int world[ROW][COL]) {
     int* values = calloc(ROW * COL, sizeof(int));
     int** new_world = malloc(ROW * sizeof(int*));
-    // int new_world[ROW][COL];
     int i, k, num_neighbors;
     for (int i=0; i < ROW; ++i) {
         new_world[i] = values + i * COL;

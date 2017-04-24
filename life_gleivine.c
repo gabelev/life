@@ -12,11 +12,12 @@ Description: The Game of life.
 #define COL 10
 
 void print_world(int world[ROW][COL]);
+void print_pointer(int **world);
 // int check_worlds_are_same(int old_world[ROW][COL], int new_world[ROW][COL]);
 // int is_empty << do we need these?
-void generate_next_iteration(int world[ROW][COL]);
+int** generate_next_iteration(int world[ROW][COL]);
 int find_num_neighbors(int world[ROW][COL], int x_coordinate, int y_coordinate);
-void write_output(int world[ROW][COL], FILE *output_file);
+void write_output(int **world, FILE *output_file);
 
 int main(int argc, char* argv[]) {
     FILE *output_file = fopen("output_gabe.out", "w");
@@ -54,16 +55,20 @@ int main(int argc, char* argv[]) {
     */
 
     // create the generations
-    for (i = 0; i <= generation; i++) {
-        generate_next_iteration(world);
-    }
+    //for (i = 0; i <= generation; i++) {
+        //generate_next_iteration(world);
+    //}
     
+    int **new;
+    new = generate_next_iteration(world);
     printf("end\n");
-    print_world(world);
+    // print_world(new);
+    print_pointer(new);
     
-    // write_output(world, output_file);
+    // write_output(new, output_file);
     fclose(inputfile);
     fclose(output_file);
+    free(new);
     return 0;
 }
 
@@ -82,8 +87,22 @@ void print_world(int world[ROW][COL]) {
     }
 }
 
+void print_pointer(int **world) {
+    int i, j;
+    for (i = 0; i < ROW; i++) {
+        for (j = 0; j < COL; j++) {
+            if (j == COL - 1) {
+                printf("%d\n", world[i][j]);
+                
+            } else {
+                printf("%d ", world[i][j]);
+            }
+        }
+    }
+}
+
 // output our file
-void write_output(int world[ROW][COL], FILE *output_file) {
+void write_output(int **world, FILE *output_file) {
     int i, j;
     for (i = 0; i < ROW; i++) {
         for (j = 0; j < COL; j++) {
@@ -124,9 +143,14 @@ int find_num_neighbors(int world[ROW][COL], int y_coordinate, int x_coordinate) 
     return num_neighbors;
 }
 
-void generate_next_iteration(int world[ROW][COL]) {
-    int new_world[ROW][COL];
+int** generate_next_iteration(int world[ROW][COL]) {
+    int* values = calloc(ROW * COL, sizeof(int));
+    int** new_world = malloc(ROW * sizeof(int*));
+    // int new_world[ROW][COL];
     int i, k, num_neighbors;
+    for (int i=0; i < ROW; ++i) {
+        new_world[i] = values + i * COL;
+    }
     for (i = 0; i < ROW; i++) {
         for (k = 0; k < COL; k++) {
             num_neighbors = find_num_neighbors(world, i, k); // TODO check order of i,k
@@ -155,4 +179,5 @@ void generate_next_iteration(int world[ROW][COL]) {
     */
     // printf("DEBUG\n");
     // print_world(new_world);
+    return new_world;
 }

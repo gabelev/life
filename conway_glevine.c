@@ -38,6 +38,7 @@ int main(int argc, char* argv[]) {
             fscanf(inputfile, "%1d", &world[i][j]);
         }
     } 
+    // it seems to speed up the code, when we create an array here.
     new = create_array();
     new = generate_next_iteration(world);
     // create the generations

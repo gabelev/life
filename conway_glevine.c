@@ -58,6 +58,7 @@ int main(int argc, char* argv[]) {
     int **new;
     int generation_counter;
     generation_counter = 0;
+    // makes another array not using.
     int* values = calloc(ROW * COL, sizeof(int));
     int** pt_world = malloc(ROW * sizeof(int*));
     for (i=0; i < ROW; ++i) {
@@ -66,7 +67,7 @@ int main(int argc, char* argv[]) {
 
     // create the generations
     new = generate_next_iteration(world);
-    while (generation_counter < generation) {
+    while (generation_counter < generation - 1) {
         new = generate_next_iteration_p(new);
         generation_counter++;
     }
@@ -199,7 +200,7 @@ int** generate_next_iteration_p(int **world) {
                     new_world[i][k] = 1;
                     continue;
                 }
-                if ((world[i][k]) && (num_neighbors == 3)) {
+                if ((world[i][k] == 0) && (num_neighbors == 3)) {
                     new_world[i][k] = 1;
                     continue;
                 } else {
@@ -236,7 +237,7 @@ int** generate_next_iteration(int world[ROW][COL]) {
                     new_world[i][k] = 1;
                     continue;
                 }
-                if ((world[i][k]) && (num_neighbors == 3)) {
+                if ((world[i][k] == 0) && (num_neighbors == 3)) {
                     new_world[i][k] = 1;
                     continue;
                 } else {

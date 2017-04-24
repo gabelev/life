@@ -42,14 +42,12 @@ int main(int argc, char* argv[]) {
             fscanf(inputfile, "%1d", &world[i][j]);
         }
     } 
-
-    generation_counter = 0;
-    
+ 
     // create the generations
     new = generate_next_iteration(world);
-    while (generation_counter < generation - 1) {
+    while (generation > 0) {
         new = generate_next_iteration(new);
-        generation_counter++;
+        generation_counter--;
     }
 
     write_output(new, output_file);

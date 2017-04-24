@@ -26,18 +26,19 @@ int main(int argc, char* argv[]) {
     FILE *inputfile = fopen(argv[2], "r"); 
     int generation;
     char buffer[60];
-    int world[ROW][COL];
+    // int world[ROW][COL];
     int i, j;
     int **new;
     int generation_counter;
-    
+    int **world;
+
     generation = atoi(argv[1]);
 
     if (inputfile == NULL) {
         printf("No file to read");
         return(-1);
     }
-
+    world = create_array();
     while(!feof(inputfile)) {
         for (i = 0; i < ROW; i++) {
             for (j = 0; j < COL; j++)
@@ -48,7 +49,7 @@ int main(int argc, char* argv[]) {
     generation_counter = 0;
     
     // create the generations
-    new = generate_next_iteration(world);
+    new = generate_next_iteration_p(world);
     while (generation_counter < generation - 1) {
         new = generate_next_iteration_p(new);
         generation_counter++;
@@ -57,6 +58,7 @@ int main(int argc, char* argv[]) {
     write_output(new, output_file);
     fclose(inputfile);
     fclose(output_file);
+    free(world);
     free(new);
     return 0;
 }

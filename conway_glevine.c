@@ -154,7 +154,7 @@ int** swap_arrays(int **temp, int **original) {
  * param: pointer to a 2D array.
  * return: pointer to a 2D array solution.
  */
-int** generate_next_iteration_p(int **world) {
+int** generate_next_iteration(int **world) {
     int** temp_world;
     int i, k, num_neighbors;
     temp_world = create_array();

@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
     new = generate_next_iteration(world);
     while (generation > 0) {
         new = generate_next_iteration(new);
-        generation_counter--;
+        generation--;
     }
 
     write_output(new, output_file);

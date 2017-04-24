@@ -13,8 +13,6 @@ Description: The Game of life.
 
 void print_world(int world[ROW][COL]);
 void print_pointer(int **world);
-// int check_worlds_are_same(int old_world[ROW][COL], int new_world[ROW][COL]);
-// int is_empty << do we need these?
 int** generate_next_iteration(int world[ROW][COL]);
 int** generate_next_iteration_p(int **world);
 int find_num_neighbors(int world[ROW][COL], int x_coordinate, int y_coordinate);
@@ -45,8 +43,8 @@ int main(int argc, char* argv[]) {
         }
     } 
 
-    printf("start\n");
-    print_world(world);
+    // printf("start\n");
+    // print_world(world);
     /*
     printf("neighbors\n");
     for (i = 0; i < ROW; i++) {
@@ -65,24 +63,24 @@ int main(int argc, char* argv[]) {
     for (int i=0; i < ROW; ++i) {
         pt_world[i] = values + i * COL;
     }
-    // create the generations
 
+    // create the generations
     new = generate_next_iteration(world);
     while (generation_counter < generation) {
         new = generate_next_iteration_p(new);
         generation_counter++;
     }
     // new = generate_next_iteration(world);
-    //printf("end 1\n");
+    // printf("end 1\n");
     // print_world(new);
-    //print_pointer(new);
+    // print_pointer(new);
 
-    //new = generate_next_iteration_p(new);
-    printf("end 2\n");
-    print_pointer(new);
+    // new = generate_next_iteration_p(new);
+    // printf("end 2\n");
+    // print_pointer(new);
 
     
-    // write_output(new, output_file);
+    write_output(new, output_file);
     fclose(inputfile);
     fclose(output_file);
     free(new);

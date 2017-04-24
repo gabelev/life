@@ -11,6 +11,8 @@ Description: The Game of life, now in C.
 #define ROW 10
 #define COL 10
 
+int** create_array();
+int** swap_arrays(int **temp, int **original);
 void print_world(int world[ROW][COL]);
 void print_pointer(int **world);
 int** generate_next_iteration(int world[ROW][COL]);
@@ -153,17 +155,36 @@ int find_num_neighbors_p(int **world, int y_coordinate, int x_coordinate) {
     return num_neighbors;
 }
 
+/* allocates memory for our world array and returns a pointer to it. */
+int** create_array(){
+    int* cells = calloc(ROW * COL, sizeof(int));
+    int** multi_array = malloc(ROW * sizeof(int*));
+    int i, k;
+    for (i=0; i < ROW; ++i) {
+        multi_array[i] = cells + i * COL;
+    }
+    return multi_array;
+}
+
+/**/
+int** swap_arrays(int **temp, int **original) {
+    int i, j;
+    for (i = 0; i < ROW; i++) {
+        for (j = 0; j < COL; j++) {
+            original[i][j] = temp[i][j];
+        }
+    }
+    return original;
+}
+
 /* Generates the next world based on conway rules.
  * param: mutli-dimensional array.
  * return: pointer to an array.
  * */
 int** generate_next_iteration(int world[ROW][COL]) {
-    int* values = calloc(ROW * COL, sizeof(int));
-    int** new_world = malloc(ROW * sizeof(int*));
+    int** new_world;
     int i, k, num_neighbors;
-    for (i=0; i < ROW; ++i) {
-        new_world[i] = values + i * COL;
-    }
+    new_world = create_array();
     for (i = 0; i < ROW; i++) {
         for (k = 0; k < COL; k++) {
             num_neighbors = find_num_neighbors(world, i, k); 
@@ -188,31 +209,29 @@ int** generate_next_iteration(int world[ROW][COL]) {
 
 /* Same as above but takes a pointer as input. */
 int** generate_next_iteration_p(int **world) {
-    int* values = calloc(ROW * COL, sizeof(int));
-    int** new_world = malloc(ROW * sizeof(int*));
+    int** temp_world;
     int i, k, num_neighbors;
-    for (i=0; i < ROW; ++i) {
-        new_world[i] = values + i * COL;
-    }
+    temp_world = create_array();
     for (i = 0; i < ROW; i++) {
         for (k = 0; k < COL; k++) {
             num_neighbors = find_num_neighbors_p(world, i, k); 
             if ((num_neighbors == 2) || (num_neighbors == 3)) {
                 if (world[i][k] == 1) {
-                    new_world[i][k] = 1;
+                    temp_world[i][k] = 1;
                     continue;
                 }
                 if ((world[i][k] == 0) && (num_neighbors == 3)) {
-                    new_world[i][k] = 1;
+                    temp_world[i][k] = 1;
                     continue;
                 } else {
-                    new_world[i][k] = 0;
+                    temp_world[i][k] = 0;
                 }
             } else {
-                new_world[i][k] = 0;
+                temp_world[i][k] = 0;
             }
         }
     }
-    return new_world;
+    world = swap_arrays(temp_world, world);
+    return world;
 }
 

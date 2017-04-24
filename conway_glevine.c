@@ -232,6 +232,7 @@ int** generate_next_iteration_p(int **world) {
         }
     }
     world = swap_arrays(temp_world, world);
+    free(temp_world);
     return world;
 }
 

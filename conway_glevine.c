@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
     write_output(new, output_file);
     fclose(inputfile);
     fclose(output_file);
-    free(world);
+    // free(world);
     free(new);
     return 0;
 }

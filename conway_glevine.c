@@ -90,7 +90,7 @@ void print_pointer(int **world) {
 
 
 
-// output our file
+/* output our file */
 void write_output(int **world, FILE *output_file) {
     int i, j;
     for (i = 0; i < ROW; i++) {
@@ -130,6 +130,7 @@ int find_num_neighbors(int world[ROW][COL], int y_coordinate, int x_coordinate) 
     return num_neighbors;
 }
 
+/* Same as above, but takes a pointer world as input*/
 int find_num_neighbors_p(int **world, int y_coordinate, int x_coordinate) {
     int i, j;
     int num_neighbors = 0;
@@ -152,6 +153,40 @@ int find_num_neighbors_p(int **world, int y_coordinate, int x_coordinate) {
     return num_neighbors;
 }
 
+/* Generates the next world based on conway rules.
+ * param: mutli-dimensional array.
+ * return: pointer to an array.
+ * */
+int** generate_next_iteration(int world[ROW][COL]) {
+    int* values = calloc(ROW * COL, sizeof(int));
+    int** new_world = malloc(ROW * sizeof(int*));
+    int i, k, num_neighbors;
+    for (i=0; i < ROW; ++i) {
+        new_world[i] = values + i * COL;
+    }
+    for (i = 0; i < ROW; i++) {
+        for (k = 0; k < COL; k++) {
+            num_neighbors = find_num_neighbors(world, i, k); 
+            if ((num_neighbors == 2) || (num_neighbors == 3)) {
+                if (world[i][k] == 1) {
+                    new_world[i][k] = 1;
+                    continue;
+                }
+                if ((world[i][k] == 0) && (num_neighbors == 3)) {
+                    new_world[i][k] = 1;
+                    continue;
+                } else {
+                    new_world[i][k] = 0;
+                }
+            } else {
+                new_world[i][k] = 0;
+            }
+        }
+    }
+    return new_world;
+}
+
+/* Same as above but takes a pointer as input. */
 int** generate_next_iteration_p(int **world) {
     int* values = calloc(ROW * COL, sizeof(int));
     int** new_world = malloc(ROW * sizeof(int*));
@@ -181,31 +216,3 @@ int** generate_next_iteration_p(int **world) {
     return new_world;
 }
 
-int** generate_next_iteration(int world[ROW][COL]) {
-    int* values = calloc(ROW * COL, sizeof(int));
-    int** new_world = malloc(ROW * sizeof(int*));
-    int i, k, num_neighbors;
-    for (i=0; i < ROW; ++i) {
-        new_world[i] = values + i * COL;
-    }
-    for (i = 0; i < ROW; i++) {
-        for (k = 0; k < COL; k++) {
-            num_neighbors = find_num_neighbors(world, i, k); 
-            if ((num_neighbors == 2) || (num_neighbors == 3)) {
-                if (world[i][k] == 1) {
-                    new_world[i][k] = 1;
-                    continue;
-                }
-                if ((world[i][k] == 0) && (num_neighbors == 3)) {
-                    new_world[i][k] = 1;
-                    continue;
-                } else {
-                    new_world[i][k] = 0;
-                }
-            } else {
-                new_world[i][k] = 0;
-            }
-        }
-    }
-    return new_world;
-}
